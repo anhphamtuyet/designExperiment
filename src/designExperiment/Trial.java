@@ -1,3 +1,4 @@
+package designExperiment;
 public class Trial {
 	protected int block;
 	protected int trial;

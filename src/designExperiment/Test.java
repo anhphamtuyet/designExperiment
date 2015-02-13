@@ -1,4 +1,4 @@
-package fr.lri.ilda.introswingstates;
+package designExperiment;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
