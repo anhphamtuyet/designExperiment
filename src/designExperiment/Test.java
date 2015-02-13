@@ -34,28 +34,7 @@ public class Test {
         //final CEllipse target = canvas.newEllipse(x_middle-20, y_middle-20, 40, 40);
         //final CEllipse object = canvas.newEllipse(100, 100, 40, 40);
 
-        Point loc = new Point(150,150);
-        int size = 30;
-        CPolyLine triangle1 = createTriangle(loc,size,false);
-        loc = new Point(150+size,150);
-        CPolyLine triangle2 = createTriangle(loc,size,false);
-
-
-        loc = new Point(250,150);
-        CPolyLine triangle3 = createTriangle(loc,size,false);
-        loc = new Point(250+size,150);
-        CPolyLine triangle4 = createTriangle(loc,size,true);
-
-
-        loc = new Point(150,200);
-        CPolyLine triangle5 = createTriangle(loc,size,false);
-        loc = new Point(150+size,200);
-        CPolyLine triangle6 = createTriangle(loc,size,false);
-
-        loc = new Point(250,200);
-        CPolyLine triangle7 = createTriangle(loc,size,false);
-        loc = new Point(250+size,200);
-        CPolyLine triangle8 = createTriangle(loc,size,false);
+        fillGrid(4,30);
 
         double shapesCenterX = experimentShapes.getCenterX();
         double shapesCenterY = experimentShapes.getCenterY();
@@ -138,14 +117,18 @@ public class Test {
     }
 
 
-    public void fillGrid(int n, int size,double x_middle, double y_middle){
-	/*	Point loc = new Point ()
-		for (int i =0; i<n; i++) {
-			
-		CPolyLine triangle1 = createTriangle(loc,size,canvas,false);
-		loc = new Point(150+size,150);
-		CPolyLine triangle2 = createTriangle(loc,size,canvas,false);
-		}*/
+    public static void fillGrid(int n, int size){
+		Point loc = new Point (0,0);
+		for (int i =0; i<Math.sqrt(n); i++) {
+			for (int j =0; j<Math.sqrt(n); j++) {
+		CPolyLine triangle1 = createTriangle(loc,size,false);
+		loc.x  += size;
+		CPolyLine triangle2 = createTriangle(loc,size,false);
+		loc.x+=100;
+			}
+			loc.y+=100;
+			loc.x=0;
+		}
     }
 
 }
