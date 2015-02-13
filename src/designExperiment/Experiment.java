@@ -64,36 +64,18 @@ public class Experiment {
 	public void stop() {
 		// display a "thank you" message
         System.out.println("Thank you for your cooperation!");
+        return;
 	}
 
 	public void nextTrial() {
 		if (currentTrial >= allTrials.size()) {
 			stop();
+            return;
 		}
 		Trial trial = allTrials.get(currentTrial);
 		trial.displayInstructions();
 	}
 
-	public void loadTrials() {
-		allTrials.clear();
-		// read the design file and keep only the trials to run
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(designFile));
-			String line = br.readLine();
-			// ...
-			while (line != null) {
-				String[] parts = line.split(",");
-				// ...
-				// allTrials.add(new Trial(...));
-				line = br.readLine();
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public void loadTrials(String participant, int block, int trial) {
 		allTrials.clear();
