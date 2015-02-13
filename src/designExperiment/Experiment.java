@@ -6,18 +6,29 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Experiment {
-	// input file (design): "experiment.csv"
-	protected File designFile = null;
 	// output file: logs
 	protected PrintWriter pwLog = null;
 	protected ArrayList<Trial> allTrials = new ArrayList<Trial>();
 	protected int currentTrial = 0;
+	
+	protected String participant;
+	protected int block;
+	protected int trial;
+	// input file (design): "experiment.csv"
+	protected File designFile = null;
 
 	public Experiment(String participant, int block, int trial, File designFile) {
 		// ...
-		loadTrials();
+		this.participant = participant;
+		this.block = block;
+		this.trial = trial;
+		this.designFile = designFile;
+
+	
+		loadTrials(participant, block, trial);
 		initLog();
 		nextTrial();
 	}
@@ -52,6 +63,7 @@ public class Experiment {
 
 	public void stop() {
 		// display a "thank you" message
+        System.out.println("Thank you for your cooperation!");
 	}
 
 	public void nextTrial() {
@@ -82,4 +94,35 @@ public class Experiment {
 			e.printStackTrace();
 		}
 	}
+	
+	public void loadTrials(String participant, int block, int trial) {
+		allTrials.clear();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(designFile));
+			String line = br.readLine();
+			line = br.readLine();
+			while(line != null) {
+				String[] parts = line.split(",");
+				String p = parts[0];
+				int b = Integer.parseInt(parts[2]);
+				int t = Integer.parseInt(parts[3]);
+				String targetChange = parts[4];
+				int objectsCount = Integer.parseInt(parts[5]);
+				if(p.compareTo(participant) == 0) {
+					if(b > block || (b == block && t >= trial)) {
+						allTrials.add(new Trial(this, b, t, targetChange, objectsCount));
+					}
+				}
+				line = br.readLine();
+				System.out.println(line);
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 }
