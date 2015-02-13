@@ -1,4 +1,16 @@
 package designExperiment;
+import fr.lri.swingstates.canvas.CElement;
+import fr.lri.swingstates.canvas.CExtensionalTag;
+import fr.lri.swingstates.canvas.CStateMachine;
+import fr.lri.swingstates.canvas.Canvas;
+import fr.lri.swingstates.canvas.transitions.ClickOnShape;
+import fr.lri.swingstates.sm.State;
+import fr.lri.swingstates.sm.Transition;
+import fr.lri.swingstates.sm.transitions.KeyPress;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +32,12 @@ public class Experiment {
 	// input file (design): "experiment.csv"
 	protected File designFile = null;
 
+    protected Canvas canvas;
+
+    protected CExtensionalTag instructions = new CExtensionalTag() { };
+
+    public static Font INSTRUCTIONS_FONT = new Font("Helvetica", Font.PLAIN, 20);
+
 	public Experiment(String participant, int block, int trial, File designFile) {
 		// ...
 		this.participant = participant;
@@ -29,9 +47,54 @@ public class Experiment {
 
 	
 		loadTrials(participant, block, trial);
-		initLog();
+
+        JFrame frame = new JFrame();
+        canvas = new Canvas(800, 600);
+        frame.getContentPane().add(canvas);
+        frame.pack();
+        frame.setVisible(true);
+
+        canvas.requestFocus();
+
+        CStateMachine interaction = new CStateMachine() {
+          State instructionsShown = new State() {
+            Transition enterKey = new KeyPress(KeyEvent.VK_ENTER, ">> fullShapesShown") {
+                public void action() {
+                    System.out.println("show instructions");
+                    allTrials.get(currentTrial).hideInstructions();
+                    // hide instructions
+                }
+            };
+          };
+            State fullShapesShown = new State() {
+                Transition spaceBar = new KeyPress(KeyEvent.VK_SPACE, ">> placeholdersShown") {
+                    public void action() {
+                        System.out.println("full shapes");
+                        // hide shapes, show placeholders
+                    }
+                };
+            };
+            State placeholdersShown = new State() {
+                Transition clickShape = new ClickOnShape(BUTTON1, ">> instructionsShown") {
+                    public void action() {
+                        System.out.println("click on shape");
+                        // test if the click happened on the target or not
+                        // log success and time
+                        // hide all shapes
+                        // currentTrial++ and then call nextTrial
+                    }
+                };
+            };
+        };
+        interaction.attachTo(canvas);
+
+		//initLog();
 		nextTrial();
 	}
+
+    public CExtensionalTag getInstructions() {
+        return instructions;
+    }
 
 	public void trialCompleted() {
 		Trial trial = allTrials.get(currentTrial);
@@ -76,6 +139,9 @@ public class Experiment {
 		trial.displayInstructions();
 	}
 
+    public Canvas getCanvas() {
+        return canvas;
+    }
 	
 	public void loadTrials(String participant, int block, int trial) {
 		allTrials.clear();
@@ -106,5 +172,9 @@ public class Experiment {
 		}
 
 	}
+
+    public static void main(String[] args) {
+        new Experiment("0", 1, 0, new File("experiment.csv"));
+    }
 
 }

@@ -1,5 +1,7 @@
 package designExperiment;
 
+import fr.lri.swingstates.canvas.CText;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,15 +15,7 @@ public class Trial {
 	protected String targetChange;
 	protected int nonTargetsCount;
 	protected Experiment experiment;
-//	protected File designFile;
-//	protected String fileName = "experiment.csv";
-//	protected ArrayList<Trial> allTrials = new ArrayList<Trial>();
 
-	public Trial() {
-		// ...
-		
-	}
-	
 
 	public Trial(Experiment experiment2, int b, int t, String targetChange2, int objectsCount) {
 		// TODO Auto-generated constructor stub
@@ -35,23 +29,27 @@ public class Trial {
 
 
 	public void displayInstructions() {
-		// ...
+		CText text1 = experiment.getCanvas().newText(100, 100, "instructions", Experiment.INSTRUCTIONS_FONT);
+        text1.addTag(experiment.getInstructions());
 
 	}
 
 
 
 	public void hideInstructions() {
-	//	experiment.getCanvas().removeShapes(experiment.getInstructions());
+		experiment.getCanvas().removeShapes(experiment.getInstructions());
 	}
 
 	public void start() {
-		// ...
-		// install the graphical listener and the user input listener
+
+        // display fullshapes
+
 		// call experiment.trialCompleted(); when appropriate
+        experiment.trialCompleted();
 	}
 
 	public void stop() {
 		// ...
+
 	}
 }
