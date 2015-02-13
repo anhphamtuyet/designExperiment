@@ -16,7 +16,7 @@ public class Test {
     static Canvas canvas;
     static CExtensionalTag experimentShapes = new CExtensionalTag() {
     };
-    static CExtensionalTag ballShapes = new CExtensionalTag() {
+    static CExtensionalTag placeholderShapes = new CExtensionalTag() {
     };
 
     public static void main(String[] args) {
@@ -44,8 +44,14 @@ public class Test {
 
         experimentShapes.translateBy(x_middle-shapesCenterX, y_middle-shapesCenterY);
         
-     //   double shapesCenterX = experimentShapes.getCenterX();
-     //   double shapesCenterY = experimentShapes.getCenterY();
+        
+        placeholderGrid(number_of_el,30);
+        
+        double placeholderCenterX = placeholderShapes.getCenterX();
+        double placeholderCenterY = placeholderShapes.getCenterY();
+        
+        placeholderShapes.translateBy(x_middle-placeholderCenterX, y_middle-placeholderCenterY);
+
 
         //	object.setFillPaint(Color.RED);
 
@@ -137,14 +143,14 @@ public class Test {
 		}
     }
     
-    public static void ballGrid(int n, int size){
+    public static void placeholderGrid(int n, int size){
 		Point loc = new Point (0,0);
 		for (int i =0; i<Math.sqrt(n); i++) {
 			for (int j =0; j<Math.sqrt(n); j++) {
 				CEllipse circle = canvas.newEllipse(loc.x,loc.y,size,size);
-		        circle.addTag(ballShapes);
+		        circle.addTag(placeholderShapes);
 
-		loc.x+=70;
+		loc.x+=100;
 			}
 			loc.y+=70;
 			loc.x=0;
