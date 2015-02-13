@@ -90,9 +90,9 @@ public class Test {
                 Transition pressSpaceBar = new KeyPress(KeyEvent.VK_SPACE) {
                     public void action() {
                         System.out.println("Space bar");
-                        //target.setDrawable(false);
+                        experimentShapes.setDrawable(false);
 
-                        canvas.getTag("instruction").setFillPaint(Color.RED);
+                       // canvas.getTag("instruction").setFillPaint(Color.RED);
                     }
                 };
 
