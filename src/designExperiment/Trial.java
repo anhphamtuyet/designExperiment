@@ -36,6 +36,7 @@ public class Trial {
 
 	public void displayInstructions() {
 		// ...
+
 	}
 
 
