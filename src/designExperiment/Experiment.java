@@ -38,7 +38,7 @@ public class Experiment {
 
     public static Font INSTRUCTIONS_FONT = new Font("Helvetica", Font.PLAIN, 20);
 
-	public Experiment(String participant, int block, int trial, File designFile) {
+	public Experiment(String participant, int block, final int trial, File designFile) {
 		// ...
 		this.participant = participant;
 		this.block = block;
@@ -61,8 +61,10 @@ public class Experiment {
             Transition enterKey = new KeyPress(KeyEvent.VK_ENTER, ">> fullShapesShown") {
                 public void action() {
                     System.out.println("show instructions");
-                    allTrials.get(currentTrial).hideInstructions();
+
                     // hide instructions
+                    allTrials.get(currentTrial).start();
+                    allTrials.get(currentTrial).hideInstructions();
                 }
             };
           };
