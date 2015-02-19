@@ -61,10 +61,14 @@ public class Experiment {
             Transition enterKey = new KeyPress(KeyEvent.VK_ENTER, ">> fullShapesShown") {
                 public void action() {
                     System.out.println("show instructions");
+                    double x_middle = canvas.getPreferredSize().getWidth()/2;
+                    double y_middle = canvas.getPreferredSize().getHeight()/2;
 
                     // hide instructions
-                    allTrials.get(currentTrial).start();
+                    allTrials.get(currentTrial).start(x_middle,y_middle);
+                    
                     allTrials.get(currentTrial).hideInstructions();
+                    
                 }
             };
           };
@@ -73,6 +77,12 @@ public class Experiment {
                     public void action() {
                         System.out.println("full shapes");
                         // hide shapes, show placeholders
+                        
+
+                        double x_middle = canvas.getPreferredSize().getWidth()/2;
+                        double y_middle = canvas.getPreferredSize().getHeight()/2;
+                        allTrials.get(currentTrial).stop(x_middle,y_middle);
+
                     }
                 };
             };
@@ -100,7 +110,7 @@ public class Experiment {
 
 	public void trialCompleted() {
 		Trial trial = allTrials.get(currentTrial);
-		trial.stop();
+		//trial.stop();
 		log(trial);
 		currentTrial++;
 		nextTrial();

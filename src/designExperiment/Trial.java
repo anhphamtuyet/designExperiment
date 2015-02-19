@@ -36,6 +36,7 @@ public class Trial {
 		trial = t;
 		targetChange = targetChange2;
 		nonTargetsCount = objectsCount;
+
 	}
 
 
@@ -52,17 +53,34 @@ public class Trial {
 		experiment.getCanvas().removeShapes(experiment.getInstructions());
 	}
 
-	public void start() {
+	public void start(double x_middle, double y_middle) {
 
         // display fullshapes
 		fillGrid(nonTargetsCount, 30);
+		double shapesCenterX = experimentShapes.getCenterX();
+        double shapesCenterY = experimentShapes.getCenterY();
+        
+
+        experimentShapes.translateBy(x_middle-shapesCenterX, y_middle-shapesCenterY);
+        
+        
+       
+        
+       
 
 		// call experiment.trialCompleted(); when appropriate
-        experiment.trialCompleted();
+        //experiment.trialCompleted();
 	}
 
-	public void stop() {
+	public void stop(double x_middle, double y_middle) {
 		// ...
+        experimentShapes.setDrawable(false);
+
+		placeholderGrid(nonTargetsCount, 30);
+		 double placeholderCenterX = placeholderShapes.getCenterX();
+	        double placeholderCenterY = placeholderShapes.getCenterY();
+	        
+	        placeholderShapes.translateBy(x_middle-placeholderCenterX, y_middle-placeholderCenterY);
 
 	}
 	
