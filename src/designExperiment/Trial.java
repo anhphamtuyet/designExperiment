@@ -130,7 +130,6 @@ public class Trial {
 			CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
 		}
 		cont++;
-		System.out.println("num: " + r);
 		loc.x+=70;
 			}
 			loc.y+=70;
