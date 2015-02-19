@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Trial {
 	protected int block;
@@ -114,12 +115,22 @@ public class Trial {
 
 
     public void fillGrid(int n, int size){
+        Random rand = new Random();
+        int r = rand.nextInt(n);
+        int cont = 0;
 		Point loc = new Point (0,0);
 		for (int i =0; i<Math.sqrt(n); i++) {
 			for (int j =0; j<Math.sqrt(n); j++) {
 		CPolyLine triangle1 = createTriangle(loc,size,false,experiment.getCanvas());
 		loc.x  += size;
-		CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
+		if(cont == r) {
+			CPolyLine triangle2 = createTriangle(loc,size,true,experiment.getCanvas());
+		}
+		else {
+			CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
+		}
+		cont++;
+		System.out.println("num: " + r);
 		loc.x+=70;
 			}
 			loc.y+=70;
