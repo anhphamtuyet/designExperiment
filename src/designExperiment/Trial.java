@@ -135,7 +135,7 @@ public class Trial {
     public void fillGrid(int n, int size, int isW2){
         System.out.println("Number of targets displayed: " + n);
 
-        int size1 = (int) (size * 1.2);
+        int size1 = (int) (size * 1.3);
 
 
         Random rand = new Random();
@@ -146,7 +146,44 @@ public class Trial {
 			for (int j =0; j<Math.sqrt(n); j++) {
                 //in case both W1 and W2: random size distribution
                 if(isW2 == 0) {
+                    if(Math.random() < 0.5) {
+                        CPolyLine triangle1 = createTriangle(loc,size1,false,experiment.getCanvas());
+                        loc.x  += size1;
 
+
+                        if(cont == r) {
+                            CPolyLine triangle2 = createTriangle(loc,size1,true,experiment.getCanvas());
+                        }
+                        else {
+                            CPolyLine triangle2 = createTriangle(loc,size1,false,experiment.getCanvas());
+                        }
+                        cont++;
+                        loc.x+=70;
+                    }
+                    else {
+                        if(cont == r) {
+                            CPolyLine triangle1 = createTriangle(loc,size1,false,experiment.getCanvas());
+                            loc.x  += size1;
+
+                            //the right target
+                            {
+                                CPolyLine triangle2 = createTriangle(loc,size1,true,experiment.getCanvas());
+                            }
+                        }
+
+                        else {
+                            CPolyLine triangle1 = createTriangle(loc,size,false,experiment.getCanvas());
+                            loc.x  += size1;
+
+                            //the right target
+                            {
+                                CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
+                            }
+
+                        }
+                        cont++;
+                        loc.x+=70;
+                    }
                 }
 
                 //in case only W2: random size & no symmetric difference
