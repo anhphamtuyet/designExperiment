@@ -46,15 +46,15 @@ public class Trial {
 		CText text1 = experiment.getCanvas().newText(100, 100, "STEP 1: YOU WILL SEE THE LIST OF OBJECTS, PLEASE DETECT DIFFERENT ONE AND USE MOUSE TO CLICK ON IT."
                 , Experiment.INSTRUCTIONS_FONT);
         text1.addTag(experiment.getInstructions());
-        CText text2 = experiment.getCanvas().newText(100, 200, "STEP 2: USING A SEQUENCE OF PRESSING < ENTER KEY > TO PROCEED AFTER SEEING THIS INSTRUCTION EACH TIME <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST"
+        CText text2 = experiment.getCanvas().newText(100, 200, "STEP 2: USING A SEQUENCE OF PRESSING < ENTER KEY > TO PROCEED AFTER SEEING THIS INSTRUCTION EACH TIME <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST."
                 , Experiment.INSTRUCTIONS_FONT);
         text2.addTag(experiment.getInstructions());
 
-        CText text3 = experiment.getCanvas().newText(100, 300, "STEP 3: < SPACE KEY > TO START THE TEST AFTER YOU'RE SURE OF DETECTING DIFFERENT OBJECT"
+        CText text3 = experiment.getCanvas().newText(100, 300, "STEP 3: < SPACE KEY > TO START THE TEST AFTER YOU'RE SURE OF DETECTING DIFFERENT OBJECT."
                 , Experiment.INSTRUCTIONS_FONT);
         text3.addTag(experiment.getInstructions());
 
-        CText text4 = experiment.getCanvas().newText(100, 400, "STEP 4: <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST"
+        CText text4 = experiment.getCanvas().newText(100, 400, "STEP 4: <CLICK MOUSE> ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST."
                 , Experiment.INSTRUCTIONS_FONT);
         text4.addTag(experiment.getInstructions());
 

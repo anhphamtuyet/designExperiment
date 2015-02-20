@@ -37,7 +37,7 @@ public class Experiment {
 
     protected CExtensionalTag instructions = new CExtensionalTag() { };
 
-    public static Font INSTRUCTIONS_FONT = new Font("Helvetica", Font.PLAIN, 20);
+    public static Font INSTRUCTIONS_FONT = new Font("Helvetica", Font.PLAIN, 15);
 
 	public Experiment(String participant, int block, final int trial, File designFile) {
 		// ...
@@ -50,7 +50,7 @@ public class Experiment {
 		loadTrials(participant, block, trial);
 
         JFrame frame = new JFrame();
-        canvas = new Canvas(800, 600);
+        canvas = new Canvas(1366, 600);
         frame.getContentPane().add(canvas);
         frame.pack();
         frame.setVisible(true);
