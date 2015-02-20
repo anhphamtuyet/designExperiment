@@ -1,9 +1,6 @@
 package designExperiment;
 
-import fr.lri.swingstates.canvas.CEllipse;
-import fr.lri.swingstates.canvas.CExtensionalTag;
-import fr.lri.swingstates.canvas.CPolyLine;
-import fr.lri.swingstates.canvas.CText;
+import fr.lri.swingstates.canvas.*;
 import fr.lri.swingstates.canvas.Canvas;
 
 import java.awt.*;
@@ -21,6 +18,9 @@ public class Trial {
 	protected String targetChange;
 	protected int nonTargetsCount;
 	protected  Experiment experiment;
+    protected CShape target = null;
+
+    private int row = -1, column = -1;
 	
 	
 	//static Canvas canvas;
@@ -153,6 +153,8 @@ public class Trial {
 
                         if(cont == r) {
                             CPolyLine triangle2 = createTriangle(loc,size1,true,experiment.getCanvas());
+                            row = i;
+                            column = j;
                         }
                         else {
                             CPolyLine triangle2 = createTriangle(loc,size1,false,experiment.getCanvas());
@@ -163,6 +165,8 @@ public class Trial {
                     else {
                         if(cont == r) {
                             CPolyLine triangle1 = createTriangle(loc,size1,false,experiment.getCanvas());
+                            row = i;
+                            column = j;
                             loc.x  += size1;
 
                             //the right target
@@ -189,6 +193,22 @@ public class Trial {
                 //in case only W2: random size & no symmetric difference
                 else if(isW2 == 1) {
 
+
+                    //the right target
+                    if(cont == r) {
+                        CPolyLine triangle1 = createTriangle(loc,size1,false,experiment.getCanvas());
+                        loc.x  += size1;
+                        CPolyLine triangle2 = createTriangle(loc,size1,true,experiment.getCanvas());
+                        row = i;
+                        column = j;
+                    }
+                    else {
+                        CPolyLine triangle1 = createTriangle(loc,size,false,experiment.getCanvas());
+                        loc.x  += size1;
+                        CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
+                    }
+                    cont++;
+                    loc.x+=70;
                 }
 
 
@@ -201,6 +221,8 @@ public class Trial {
                     //the right target
                     if(cont == r) {
                         CPolyLine triangle2 = createTriangle(loc,size,true,experiment.getCanvas());
+                        row = i;
+                        column = j;
                     }
                     else {
                         CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
@@ -216,17 +238,29 @@ public class Trial {
     }
     
     public void placeholderGrid(int n, int size){
+        CEllipse circle = null;
 		Point loc = new Point (0,0);
 		for (int i =0; i<Math.sqrt(n); i++) {
 			for (int j =0; j<Math.sqrt(n); j++) {
-				CEllipse circle = experiment.getCanvas().newEllipse(loc.x,loc.y,size,size);
+				circle = experiment.getCanvas().newEllipse(loc.x,loc.y,size,size);
 		        circle.addTag(placeholderShapes);
                 circle.setFillPaint(Color.RED);
 
-		loc.x+=100;
-			}
-			loc.y+=70;
-			loc.x=0;
+
+                loc.x+=100;
+
+                if(row == i && column == j) {
+
+                    target = circle;
+                }
+            }
+
+
+            loc.y+=70;
+            loc.x=0;
+
+
+
 		}
     }
 	

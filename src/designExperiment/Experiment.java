@@ -11,6 +11,7 @@ import fr.lri.swingstates.sm.transitions.Click;
 import fr.lri.swingstates.sm.transitions.KeyPress;
 
 import javax.swing.*;
+import javax.swing.text.Position;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -32,6 +33,7 @@ public class Experiment {
     protected double currentTime = 0;
 
     protected Canvas canvas;
+//    protected Position
 
     protected CExtensionalTag instructions = new CExtensionalTag() { };
 
@@ -91,17 +93,41 @@ public class Experiment {
                 };
             };
             State placeholdersShown = new State() {
+                boolean hit = false;
                 Transition clickShape = new ClickOnShape(BUTTON1, ">> instructionsShown") {
                     public void action() {
+                        if(getShape() == allTrials.get(currentTrial).target){
+                            System.out.println("click");
+                            hit = true;
+                        }else{
+                            System.out.println("noclick");
+                            hit = false;
+                        }
+
+                        //String data = allTrials.get(currentTrial).block+";\t"
+                        //+currentTrial+";\t"
+                        //+allTrials.get(currentTrial).targetChange+";\t"
+                        //+allTrials.get(currentTrial).objectsCount+";\t"
+                        //+time_used[currentTrial]+";\t"
+                        //+hit+";\t"
+                        ////+allTrials.get(currentTrial).delta+";"
+                        //+ "\n";
+                        ////pwLog.print(data);
+                        //pwLog.flush();
+                        // check if the click was on the target or not
+                        // log
                         currentTime = ((System.currentTimeMillis() - currentTime) / 1000.0);
                         System.out.println("click on shape " + currentTime + " seconds");
+
                         // test if the click happened on the target or not
+
+
                         // log success and time
 
                         // hide all shapes
                         canvas.removeAllShapes();
-                        // currentTrial++ and then call nextTrial
 
+                        // currentTrial++ and then call nextTrial
                         currentTrial++;
 
                         nextTrial();
