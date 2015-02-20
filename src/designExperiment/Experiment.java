@@ -1,24 +1,22 @@
 package designExperiment;
-import fr.lri.swingstates.canvas.CElement;
+
 import fr.lri.swingstates.canvas.CExtensionalTag;
 import fr.lri.swingstates.canvas.CStateMachine;
 import fr.lri.swingstates.canvas.Canvas;
 import fr.lri.swingstates.canvas.transitions.ClickOnShape;
+import fr.lri.swingstates.canvas.transitions.PressOnShape;
 import fr.lri.swingstates.sm.State;
 import fr.lri.swingstates.sm.Transition;
+import fr.lri.swingstates.sm.transitions.Click;
 import fr.lri.swingstates.sm.transitions.KeyPress;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
+import java.awt.event.MouseEvent;
+import java.io.*;
+import java.util.*;
+import java.util.Timer;
 
 public class Experiment {
 	// output file: logs
@@ -31,6 +29,7 @@ public class Experiment {
 	protected int trial;
 	// input file (design): "experiment.csv"
 	protected File designFile = null;
+    protected double currentTime = 0;
 
     protected Canvas canvas;
 
@@ -60,24 +59,29 @@ public class Experiment {
           State instructionsShown = new State() {
             Transition enterKey = new KeyPress(KeyEvent.VK_ENTER, ">> fullShapesShown") {
                 public void action() {
-                    System.out.println("show instructions");
+                    System.out.println("TESTING NUMBER " + (currentTrial + 1) + " START");
+//                    System.out.printf("YOU WILL SEE THE LIST OF OBJECTS, PLEASE DETECT DIFFERENT ONE AND USE MOUSE TO CLICK ON IT. \n USING A SEQUENCE OF PRESSING \n < ENTER KEY > TO PROCEED AFTER SEEING THIS INSTRUCTION EACH TIME \n < SPACE KEY > TO START THE TEST AFTER YOU\'RE SURE OF DETECTING DIFFERENT OBJECT <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST");
+
                     double x_middle = canvas.getPreferredSize().getWidth()/2;
                     double y_middle = canvas.getPreferredSize().getHeight()/2;
 
                     // hide instructions
-                    allTrials.get(currentTrial).start(x_middle,y_middle);
+                     allTrials.get(currentTrial).start(x_middle,y_middle);
                     
                     allTrials.get(currentTrial).hideInstructions();
-                    
+
                 }
             };
           };
+
             State fullShapesShown = new State() {
                 Transition spaceBar = new KeyPress(KeyEvent.VK_SPACE, ">> placeholdersShown") {
                     public void action() {
-                        System.out.println("full shapes");
+                        currentTime = (double) System.currentTimeMillis();
+//                        new Date(System.currentTimeMillis()).getTime()
+                        System.out.println("full shapes "+ System.currentTimeMillis());
                         // hide shapes, show placeholders
-                        
+
 
                         double x_middle = canvas.getPreferredSize().getWidth()/2;
                         double y_middle = canvas.getPreferredSize().getHeight()/2;
@@ -89,18 +93,27 @@ public class Experiment {
             State placeholdersShown = new State() {
                 Transition clickShape = new ClickOnShape(BUTTON1, ">> instructionsShown") {
                     public void action() {
-                        System.out.println("click on shape");
+                        currentTime = ((System.currentTimeMillis() - currentTime) / 1000.0);
+                        System.out.println("click on shape " + currentTime + " seconds");
                         // test if the click happened on the target or not
                         // log success and time
+
                         // hide all shapes
+                        canvas.removeAllShapes();
                         // currentTrial++ and then call nextTrial
+
+                        currentTrial++;
+
+                        nextTrial();
+
                     }
                 };
             };
+
         };
         interaction.attachTo(canvas);
 
-		//initLog();
+		initLog();
 		nextTrial();
 	}
 
@@ -156,7 +169,9 @@ public class Experiment {
     }
 	
 	public void loadTrials(String participant, int block, int trial) {
-		allTrials.clear();
+		allTrials.clear(); //delete all previous trials stored in the array
+
+        //reading csv trial file and store each trial data to allTrials as a Trial object
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(designFile));
 			String line = br.readLine();

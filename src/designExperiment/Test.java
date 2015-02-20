@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.Random;
 
 public class Test {
     static Canvas canvas;
@@ -36,7 +37,7 @@ public class Test {
         //final CEllipse target = canvas.newEllipse(x_middle-20, y_middle-20, 40, 40);
         //final CEllipse object = canvas.newEllipse(100, 100, 40, 40);
 
-        fillGrid(number_of_el,30);
+//        fillGrid(number_of_el,30, );
 
         double shapesCenterX = experimentShapes.getCenterX();
         double shapesCenterY = experimentShapes.getCenterY();
@@ -101,7 +102,7 @@ public class Test {
         canvas.requestFocus();
     }
 
-    public static CPolyLine createTriangle(Point loc, int size, boolean sym){
+    public static CPolyLine createTriangle(Point loc, double size, boolean sym){
         double[] xCoords = new double[3];
         double[] yCoords = new double[3];
 
@@ -129,18 +130,39 @@ public class Test {
     }
 
 
-    public static void fillGrid(int n, int size){
+    public static void fillGrid(int n, int size, boolean isW2On){
 		Point loc = new Point (0,0);
-		for (int i =0; i<Math.sqrt(n); i++) {
-			for (int j =0; j<Math.sqrt(n); j++) {
-		CPolyLine triangle1 = createTriangle(loc,size,false);
-		loc.x  += size;
-		CPolyLine triangle2 = createTriangle(loc,size,false);
-		loc.x+=70;
-			}
-			loc.y+=70;
-			loc.x=0;
-		}
+        //distribute 2 kinds of size randomly to every triangles
+        if(isW2On) {
+            double size1 = (double)size * 1.2;
+            for (int i =0; i<Math.sqrt(n); i++) {
+                for (int j =0; j<Math.sqrt(n); j++) {
+                    if(Math.random() < 0.5) {
+                        size1 = size;
+                    }
+
+                    CPolyLine triangle1 = createTriangle(loc,size1,false);
+                    loc.x  += size;
+                    CPolyLine triangle2 = createTriangle(loc,size1,false);
+                    loc.x+=70;
+                }
+                loc.y+=70;
+                loc.x=0;
+            }
+        }
+
+        else {
+            for (int i =0; i<Math.sqrt(n); i++) {
+                for (int j =0; j<Math.sqrt(n); j++) {
+                    CPolyLine triangle1 = createTriangle(loc,size,false);
+                    loc.x  += size;
+                    CPolyLine triangle2 = createTriangle(loc,size,false);
+                    loc.x+=70;
+                }
+                loc.y+=70;
+                loc.x=0;
+            }
+        }
     }
     
     public static void placeholderGrid(int n, int size){

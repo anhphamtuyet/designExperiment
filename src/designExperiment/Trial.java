@@ -6,7 +6,7 @@ import fr.lri.swingstates.canvas.CPolyLine;
 import fr.lri.swingstates.canvas.CText;
 import fr.lri.swingstates.canvas.Canvas;
 
-import java.awt.Point;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,8 +43,20 @@ public class Trial {
 
 
 	public void displayInstructions() {
-		CText text1 = experiment.getCanvas().newText(100, 100, "instructions", Experiment.INSTRUCTIONS_FONT);
+		CText text1 = experiment.getCanvas().newText(100, 100, "STEP 1: YOU WILL SEE THE LIST OF OBJECTS, PLEASE DETECT DIFFERENT ONE AND USE MOUSE TO CLICK ON IT."
+                , Experiment.INSTRUCTIONS_FONT);
         text1.addTag(experiment.getInstructions());
+        CText text2 = experiment.getCanvas().newText(100, 200, "STEP 2: USING A SEQUENCE OF PRESSING < ENTER KEY > TO PROCEED AFTER SEEING THIS INSTRUCTION EACH TIME <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST"
+                , Experiment.INSTRUCTIONS_FONT);
+        text2.addTag(experiment.getInstructions());
+
+        CText text3 = experiment.getCanvas().newText(100, 300, "STEP 3: < SPACE KEY > TO START THE TEST AFTER YOU'RE SURE OF DETECTING DIFFERENT OBJECT"
+                , Experiment.INSTRUCTIONS_FONT);
+        text3.addTag(experiment.getInstructions());
+
+        CText text4 = experiment.getCanvas().newText(100, 400, "STEP 4: <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST"
+                , Experiment.INSTRUCTIONS_FONT);
+        text4.addTag(experiment.getInstructions());
 
 	}
 
@@ -56,8 +68,12 @@ public class Trial {
 
 	public void start(double x_middle, double y_middle) {
 
+        int isW2;
         // display fullshapes
-		fillGrid(nonTargetsCount, 30);
+        if(targetChange.equals("W1&W2")) isW2 = 0;
+        else if(targetChange.equals("W1")) isW2 = -1;
+        else isW2 = 1;
+		fillGrid(nonTargetsCount, 30, isW2);
 		double shapesCenterX = experimentShapes.getCenterX();
         double shapesCenterY = experimentShapes.getCenterY();
         
@@ -77,10 +93,12 @@ public class Trial {
 		// ...
         experimentShapes.setDrawable(false);
 
+
+
 		placeholderGrid(nonTargetsCount, 30);
 		 double placeholderCenterX = placeholderShapes.getCenterX();
 	        double placeholderCenterY = placeholderShapes.getCenterY();
-	        
+
 	        placeholderShapes.translateBy(x_middle-placeholderCenterX, y_middle-placeholderCenterY);
 
 	}
@@ -114,23 +132,46 @@ public class Trial {
     }
 
 
-    public void fillGrid(int n, int size){
+    public void fillGrid(int n, int size, int isW2){
+        System.out.println("Number of targets displayed: " + n);
+
+        int size1 = (int) (size * 1.2);
+
+
         Random rand = new Random();
         int r = rand.nextInt(n);
         int cont = 0;
 		Point loc = new Point (0,0);
 		for (int i =0; i<Math.sqrt(n); i++) {
 			for (int j =0; j<Math.sqrt(n); j++) {
-		CPolyLine triangle1 = createTriangle(loc,size,false,experiment.getCanvas());
-		loc.x  += size;
-		if(cont == r) {
-			CPolyLine triangle2 = createTriangle(loc,size,true,experiment.getCanvas());
-		}
-		else {
-			CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
-		}
-		cont++;
-		loc.x+=70;
+                //in case both W1 and W2: random size distribution
+                if(isW2 == 0) {
+
+                }
+
+                //in case only W2: random size & no symmetric difference
+                else if(isW2 == 1) {
+
+                }
+
+
+                //default: in case only W1
+                else {
+
+                    CPolyLine triangle1 = createTriangle(loc,size,false,experiment.getCanvas());
+                    loc.x  += size;
+
+                    //the right target
+                    if(cont == r) {
+                        CPolyLine triangle2 = createTriangle(loc,size,true,experiment.getCanvas());
+                    }
+                    else {
+                        CPolyLine triangle2 = createTriangle(loc,size,false,experiment.getCanvas());
+                    }
+                    cont++;
+                    loc.x+=70;
+                }
+
 			}
 			loc.y+=70;
 			loc.x=0;
@@ -143,6 +184,7 @@ public class Trial {
 			for (int j =0; j<Math.sqrt(n); j++) {
 				CEllipse circle = experiment.getCanvas().newEllipse(loc.x,loc.y,size,size);
 		        circle.addTag(placeholderShapes);
+                circle.setFillPaint(Color.RED);
 
 		loc.x+=100;
 			}
