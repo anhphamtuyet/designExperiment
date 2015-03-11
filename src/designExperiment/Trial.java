@@ -16,7 +16,7 @@ public class Trial {
 	protected int block;
 	protected int trial;
 	protected String targetChange;
-	protected int nonTargetsCount;
+	protected int objectsCount;
 	protected  Experiment experiment;
     protected CShape target = null;
 
@@ -30,13 +30,13 @@ public class Trial {
     };
 
 
-	public Trial(Experiment experiment2, int b, int t, String targetChange2, int objectsCount) {
+	public Trial(Experiment experiment2, int b, int t, String tc, int oc) {
 		// TODO Auto-generated constructor stub
 		experiment = experiment2;
 		block = b;
 		trial = t;
-		targetChange = targetChange2;
-		nonTargetsCount = objectsCount;
+		targetChange = tc;
+		objectsCount = oc;
 
 	}
 
@@ -46,7 +46,7 @@ public class Trial {
 		CText text1 = experiment.getCanvas().newText(100, 100, "STEP 1: YOU WILL SEE THE LIST OF OBJECTS, PLEASE DETECT DIFFERENT ONE AND USE MOUSE TO CLICK ON IT."
                 , Experiment.INSTRUCTIONS_FONT);
         text1.addTag(experiment.getInstructions());
-        CText text2 = experiment.getCanvas().newText(100, 200, "STEP 2: USING A SEQUENCE OF PRESSING < ENTER KEY > TO PROCEED AFTER SEEING THIS INSTRUCTION EACH TIME <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST."
+        CText text2 = experiment.getCanvas().newText(100, 200, "STEP 2: USING A SEQUENCE OF PRESSING < ENTER KEY > TO PROCEED AFTER SEEING THIS INSTRUCTION EACH TIME"+ "a" +"<CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST."
                 , Experiment.INSTRUCTIONS_FONT);
         text2.addTag(experiment.getInstructions());
 
@@ -73,7 +73,7 @@ public class Trial {
         if(targetChange.equals("W1&W2")) isW2 = 0;
         else if(targetChange.equals("W1")) isW2 = -1;
         else isW2 = 1;
-		fillGrid(nonTargetsCount, 30, isW2);
+		fillGrid(objectsCount, 30, isW2);
 		double shapesCenterX = experimentShapes.getCenterX();
         double shapesCenterY = experimentShapes.getCenterY();
         
@@ -95,7 +95,7 @@ public class Trial {
 
 
 
-		placeholderGrid(nonTargetsCount, 30);
+		placeholderGrid(objectsCount, 30);
 		 double placeholderCenterX = placeholderShapes.getCenterX();
 	        double placeholderCenterY = placeholderShapes.getCenterY();
 
@@ -198,7 +198,7 @@ public class Trial {
                     if(cont == r) {
                         CPolyLine triangle1 = createTriangle(loc,size1,false,experiment.getCanvas());
                         loc.x  += size1;
-                        CPolyLine triangle2 = createTriangle(loc,size1,true,experiment.getCanvas());
+                        CPolyLine triangle2 = createTriangle(loc,size1,false,experiment.getCanvas());
                         row = i;
                         column = j;
                     }

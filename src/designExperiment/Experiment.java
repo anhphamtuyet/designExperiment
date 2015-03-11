@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Timer;
 
@@ -31,6 +32,7 @@ public class Experiment {
 	// input file (design): "experiment.csv"
 	protected File designFile = null;
     protected double currentTime = 0;
+    double actionTime=0;
 
     protected Canvas canvas;
 //    protected Position
@@ -63,6 +65,7 @@ public class Experiment {
                 public void action() {
                     System.out.println("TESTING NUMBER " + (currentTrial + 1) + " START");
 //                    System.out.printf("YOU WILL SEE THE LIST OF OBJECTS, PLEASE DETECT DIFFERENT ONE AND USE MOUSE TO CLICK ON IT. \n USING A SEQUENCE OF PRESSING \n < ENTER KEY > TO PROCEED AFTER SEEING THIS INSTRUCTION EACH TIME \n < SPACE KEY > TO START THE TEST AFTER YOU\'RE SURE OF DETECTING DIFFERENT OBJECT <CLICK MOUSE ON A DIFFERENT OBJECT IN THE PLACEHOLDER LIST");
+                    currentTime = (double) System.currentTimeMillis();
 
                     double x_middle = canvas.getPreferredSize().getWidth()/2;
                     double y_middle = canvas.getPreferredSize().getHeight()/2;
@@ -79,9 +82,11 @@ public class Experiment {
             State fullShapesShown = new State() {
                 Transition spaceBar = new KeyPress(KeyEvent.VK_SPACE, ">> placeholdersShown") {
                     public void action() {
-                        currentTime = (double) System.currentTimeMillis();
 //                        new Date(System.currentTimeMillis()).getTime()
-                        System.out.println("full shapes "+ System.currentTimeMillis());
+                        //System.out.println("full shapes "+ System.currentTimeMillis());
+                        
+                        actionTime = ((System.currentTimeMillis() - currentTime) / 1000.0);
+
                         // hide shapes, show placeholders
 
 
@@ -96,6 +101,8 @@ public class Experiment {
                 boolean hit = false;
                 Transition clickShape = new ClickOnShape(BUTTON1, ">> instructionsShown") {
                     public void action() {
+                    	
+                        // test if the click happened on the target or not
                         if(getShape() == allTrials.get(currentTrial).target){
                             System.out.println("click");
                             hit = true;
@@ -104,25 +111,21 @@ public class Experiment {
                             hit = false;
                         }
 
-                        //String data = allTrials.get(currentTrial).block+";\t"
-                        //+currentTrial+";\t"
-                        //+allTrials.get(currentTrial).targetChange+";\t"
-                        //+allTrials.get(currentTrial).objectsCount+";\t"
-                        //+time_used[currentTrial]+";\t"
-                        //+hit+";\t"
-                        ////+allTrials.get(currentTrial).delta+";"
-                        //+ "\n";
-                        ////pwLog.print(data);
-                        //pwLog.flush();
+                        // log success and time
+                        String data = allTrials.get(currentTrial).block+";"
+                        +currentTrial+";"
+                        +allTrials.get(currentTrial).targetChange+";"
+                        +allTrials.get(currentTrial).objectsCount+";"
+                        +actionTime+";"
+                        +hit+";"
+                       // +allTrials.get(currentTrial).delta+";"
+                        + "\n";
+                        pwLog.print(data);
+                        pwLog.flush();
                         // check if the click was on the target or not
                         // log
-                        currentTime = ((System.currentTimeMillis() - currentTime) / 1000.0);
                         System.out.println("click on shape " + currentTime + " seconds");
 
-                        // test if the click happened on the target or not
-
-
-                        // log success and time
 
                         // hide all shapes
                         canvas.removeAllShapes();
@@ -160,13 +163,13 @@ public class Experiment {
 	}
 
 	public void initLog() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
 		String logFileName = "log_S" + participant + "_"
-				+ (new Date()).toString() + ".csv";
+				+ dateFormat.format(new Date()) + ".csv";
 		File logFile = new File(logFileName);
 		try {
 			pwLog = new PrintWriter(logFile);
-			String header = "Block\t" + "Trial\t" + "TargetChange\t"
-					+ "NonTargetsCount\t" + "Duration\t" + "Hit\n";
+			String header = "Block;Trial;TargetChange;ObjectsCount;Duration;Hit\n";
 
 			pwLog.print(header);
 			pwLog.flush();
@@ -177,7 +180,10 @@ public class Experiment {
 
 	public void stop() {
 		// display a "thank you" message
-        System.out.println("Thank you for your cooperation!");
+		getCanvas().newText(100, 300, "THANK YOU FOR YOUR COOPERATION!"
+                , INSTRUCTIONS_FONT);
+        //System.out.println("Thank you for your cooperation!");
+        pwLog.close();
         return;
 	}
 

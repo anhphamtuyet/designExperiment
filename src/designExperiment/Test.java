@@ -14,13 +14,13 @@ import java.io.File;
 import java.util.Random;
 
 public class Test {
-    static Canvas canvas;
+   /* static Canvas canvas;
     static CExtensionalTag experimentShapes = new CExtensionalTag() {
     };
     static CExtensionalTag placeholderShapes = new CExtensionalTag() {
     };
 
-    public static void main(String[] args) {
+    public static void bla(String[] args) {
 
         File designFile = new File("experiment.csv");
 
@@ -71,7 +71,7 @@ public class Test {
 					/*	if(shapePressed == target) {
 							System.out.println("press on target");
 							shapePressed.setFillPaint(Color.WHITE);
-						} else {*/
+						} else {
                         System.out.println("press on object");
                         shapePressed.setFillPaint(Color.RED);
 
@@ -178,5 +178,5 @@ public class Test {
 			loc.x=0;
 		}
     }
-
+*/
 }
